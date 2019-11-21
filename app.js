@@ -1,4 +1,8 @@
 const Snoowrap = require('snoowrap');
+
+//Twitter API
+var Twit = require('twit');
+
 var fs = require('fs'), request = require('request');
 
 //Keys for authentication
@@ -52,6 +56,15 @@ const reddit = new Snoowrap
     clientSecret: ParsedCredentials.reddit[0].client_secret,
     username: ParsedCredentials.reddit[0].username,
     password: ParsedCredentials.reddit[0].password
+});
+
+//Authentication into Twitter
+var twitter = new Twit
+({
+    consumer_key: ParsedCredentials.twitter[0].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
+    access_token: ParsedCredentials.twitter[0].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[0].access_token_secret
 });
 
 //Downloading urls from the web
@@ -109,3 +122,55 @@ function collectRedditPosts()
     })
 }
 
+//Post photo and title to twitter
+function postTwitter()
+{
+    //Check which one is the oldest post and collect it's image and title
+    var posts = fs.readdirSync('./Posts');
+    var post = fs.readdirSync('./Posts/' + posts[0]);
+    var image = fs.readFileSync("./Posts/" + posts[0] + "/" + post[0], { encoding: 'base64' });
+    var title = "Daily Post"
+
+    //Read title
+    console.log('./Posts/' + posts[0] + '/' + post[1]);
+    fs.readFileSync('./Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
+    {
+        title = data;
+        console.log(title);
+    });
+
+    console.log(title);
+
+    // Make post request on media endpoint. Pass file data as media parameter
+    twitter.post('media/upload', {media: image}, function(error, media, response) 
+    {
+
+        if (!error) 
+        {
+
+            // If successful, a media object will be returned.
+            console.log(media);
+
+            // Lets tweet it
+            var status = 
+            {
+                status: title,
+                media_ids: media.media_id_string // Pass the media id string
+            }
+
+            twitter.post('statuses/update', status, function(error, tweet, response) 
+            {
+                if (!error) 
+                {
+                    console.log(tweet);
+                }
+            });
+
+      }
+      else
+      {
+          console.log("UPS!");
+          console.log(error);
+      }
+    });
+}
