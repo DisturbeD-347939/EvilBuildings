@@ -17,7 +17,7 @@ var postNumber = 0;
 
 //Timeouts & Intervals
 setTimeout(setup, 0);
-setTimeout(postTwitter, 1000);
+setTimeout(prepareTweet, 1000);
 //setTimeout(collectRedditPosts, 1000);
 //setInterval(collectRedditPosts, 86400000);
 
@@ -130,7 +130,7 @@ function collectRedditPosts()
 }
 
 //Post photo and title to twitter
-function postTwitter()
+function prepareTweet()
 {
     //Check which one is the oldest post and collect it's image and title
     var posts = fs.readdirSync('./Posts');
@@ -140,44 +140,48 @@ function postTwitter()
 
     //Read title
     console.log('./Posts/' + posts[0] + '/' + post[1]);
-    fs.readFileSync('./Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
+    fs.readFile('./Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
     {
         title = data;
-        console.log(title);
     });
+    setTimeout(() => postTweet(image, title), 2000);
+}
 
-    console.log(title);
-
-    // Make post request on media endpoint. Pass file data as media parameter
+function postTweet(image, title)
+{
+    // Make post request to Twitter
     twitter.post('media/upload', {media: image}, function(error, media, response) 
     {
 
         if (!error) 
         {
-
-            // If successful, a media object will be returned.
-            console.log(media);
-
-            // Lets tweet it
+            //Prepare the tweet
             var status = 
             {
                 status: title,
-                media_ids: media.media_id_string // Pass the media id string
+                media_ids: media.media_id_string
             }
 
+            //Post the tweet
             twitter.post('statuses/update', status, function(error, tweet, response) 
             {
-                if (!error) 
+                if (error) 
                 {
-                    console.log(tweet);
+                    console.log(error);
+                }
+                else
+                {
+                    console.log("Tweet posted!");
                 }
             });
 
       }
       else
       {
-          console.log("UPS!");
           console.log(error);
       }
     });
+    return;
+}
+
 }
