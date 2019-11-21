@@ -1,7 +1,5 @@
 const Snoowrap = require('snoowrap');
-const Snoostorm = require('snoostorm');
 var fs = require('fs'), request = require('request');
-var rimraf = require("rimraf");
 
 //Keys for authentication
 var Credentials = fs.readFileSync('C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json', 'utf-8');
@@ -46,8 +44,9 @@ function setup()
     console.log(postNumber);
 }
 
-//Authenticate reddit API
-const reddit = new Snoowrap({
+//Authenticate Reddit API
+const reddit = new Snoowrap
+({
     userAgent: 'EvilBuildings',
     clientId: ParsedCredentials.reddit[0].client_id,
     clientSecret: ParsedCredentials.reddit[0].client_secret,
@@ -70,6 +69,8 @@ function collectRedditPosts()
     {
         for(var i = 1; i < posts_per_day; i++)
         {
+            console.log("Creating post " + i);
+
             //Create post folder
             fs.mkdirSync('./Posts/' + postNumber);
             if(fs.existsSync('./Posts/' + postNumber))
@@ -98,7 +99,9 @@ function collectRedditPosts()
             fileFormat = fileFormat.join("");
 
             //Download the photo
-            download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat);
+            download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function(){});
+
+            console.log("Post " + i + " created!");
 
             //Increment the post number
             postNumber++;
