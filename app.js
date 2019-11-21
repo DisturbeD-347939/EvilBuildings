@@ -6,6 +6,7 @@ var Twit = require('twit');
 
 //File management
 var fs = require('fs'), request = require('request');
+var fsE = require('fs-extra');
 
 //Keys for authentication
 var Credentials = fs.readFileSync('C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json', 'utf-8');
@@ -34,6 +35,15 @@ function setup()
     else 
     {
         console.log("Posts folder checked...");
+    }
+    if(!fs.existsSync('./Used'))
+    {
+        fs.mkdirSync('./Used');
+        console.log("Created used folder!");
+    }
+    else 
+    {
+        console.log("Used folder checked...");
     }
     if(!fs.existsSync('./Posts/Counter.txt'))
     {
@@ -67,10 +77,10 @@ const reddit = new Snoowrap
 //Authentication into Twitter
 var twitter = new Twit
 ({
-    consumer_key: ParsedCredentials.twitter[0].consumer_key,
-    consumer_secret: ParsedCredentials.twitter[0].consumer_secret,
-    access_token: ParsedCredentials.twitter[0].access_token_key,
-    access_token_secret: ParsedCredentials.twitter[0].access_token_secret
+    consumer_key: ParsedCredentials.twitter[1].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[1].consumer_secret,
+    access_token: ParsedCredentials.twitter[1].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[1].access_token_secret
 });
 
 //Downloading urls from the web
@@ -144,10 +154,10 @@ function prepareTweet()
     {
         title = data;
     });
-    setTimeout(() => postTweet(image, title), 2000);
+    setTimeout(() => postTweet(image, title, posts[0]), 2000);
 }
 
-function postTweet(image, title)
+function postTweet(image, title, post)
 {
     // Make post request to Twitter
     twitter.post('media/upload', {media: image}, function(error, media, response) 
@@ -172,6 +182,7 @@ function postTweet(image, title)
                 else
                 {
                     console.log("Tweet posted!");
+                    setTimeout(() => moveUsedPost(post), 100);
                 }
             });
 
@@ -184,4 +195,17 @@ function postTweet(image, title)
     return;
 }
 
+function moveUsedPost(post)
+{
+    fsE.move('./Posts/' + post + '/', './Used/' + post + '/', err =>
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            console.log("Moved to used tweets folder");
+        }
+    })
 }
