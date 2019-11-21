@@ -12,6 +12,7 @@ var posts_per_day = 6;
 
 setTimeout(setup, 0);
 setTimeout(collectRedditPosts, 1000);
+//setInterval(collectRedditPosts, 86400);
 
 function setup()
 {
@@ -45,6 +46,7 @@ function setup()
     console.log(postNumber);
 }
 
+//Authenticate reddit API
 const reddit = new Snoowrap({
     userAgent: 'EvilBuildings',
     clientId: ParsedCredentials.reddit[0].client_id,
@@ -53,14 +55,14 @@ const reddit = new Snoowrap({
     password: ParsedCredentials.reddit[0].password
 });
 
-var download = function(uri, filename, callback){
-    request.head(uri, function(err, res, body){
-      console.log('content-type:', res.headers['content-type']);
-      console.log('content-length:', res.headers['content-length']);
-  
-      request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+//Downloading urls from the web
+var download = function(uri, filename, callback)
+{
+    request.head(uri, function(err, res, body)
+    {
+        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
-  };
+};
 
 function collectRedditPosts()
 {
@@ -68,11 +70,15 @@ function collectRedditPosts()
     {
         for(var i = 1; i < posts_per_day; i++)
         {
+            //Create post folder
             fs.mkdirSync('./Posts/' + postNumber);
             if(fs.existsSync('./Posts/' + postNumber))
             {
+                //Add the title to a txt file
                 fs.writeFileSync('./Posts/' + postNumber + '/title.txt', posts[i].title);
             }
+
+            //Check file format
             var fileFormat = "";
             for(var j = posts[i].url.length - 1; j > 0; j--)
             {
@@ -85,24 +91,18 @@ function collectRedditPosts()
                     break;
                 }
             }
+
+            //Reverse string
             fileFormat = fileFormat.split("");
             fileFormat = fileFormat.reverse();
             fileFormat = fileFormat.join("");
-            console.log(fileFormat);
 
+            //Download the photo
             download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat);
 
-            console.log(posts[i].url);
+            //Increment the post number
             postNumber++;
         }  
     })
 }
-
-
-/*download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
-  console.log('done');
-});*/
-
-//setTimeout(collectRedditPosts, 2000);
-//setInterval(collectRedditPosts, 86400);
 
