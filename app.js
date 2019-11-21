@@ -1,21 +1,27 @@
+//Reddit API
 const Snoowrap = require('snoowrap');
 
 //Twitter API
 var Twit = require('twit');
 
+//File management
 var fs = require('fs'), request = require('request');
 
 //Keys for authentication
 var Credentials = fs.readFileSync('C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json', 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
+
+//Variables
+var posts_per_day = 6;
 var postNumber = 0;
 
-var posts_per_day = 6;
-
+//Timeouts & Intervals
 setTimeout(setup, 0);
-setTimeout(collectRedditPosts, 1000);
-//setInterval(collectRedditPosts, 86400);
+setTimeout(postTwitter, 1000);
+//setTimeout(collectRedditPosts, 1000);
+//setInterval(collectRedditPosts, 86400000);
 
+//Setting up the program to run
 function setup()
 {
     //Check for the existence of the Posts folder
@@ -76,6 +82,7 @@ var download = function(uri, filename, callback)
     });
 };
 
+//Download and organize reddit posts from r/evilbuildings
 function collectRedditPosts()
 {
     reddit.getSubreddit('evilbuildings', posts_per_day).getHot().then(posts => 
