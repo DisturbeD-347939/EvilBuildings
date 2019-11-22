@@ -8,19 +8,30 @@ var Twit = require('twit');
 var fs = require('fs'), request = require('request');
 var fsE = require('fs-extra');
 
+//MODIFY THESE TO YOUR LIKING
+var get_posts_every_x_hours = 24;
+var posts_per_day = 6;
+var keyLocation = 'C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json';
+
 //Keys for authentication
-var Credentials = fs.readFileSync('C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json', 'utf-8');
+var Credentials = fs.readFileSync(keyLocation, 'utf-8');
 var ParsedCredentials = JSON.parse(Credentials);
 
 //Variables
-var posts_per_day = 6;
 var postNumber = 0;
+var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000;
+var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
+posts_per_day++;
 
-//Timeouts & Intervals
+//Timeouts
 setTimeout(setup, 0);
+setTimeout(collectRedditPosts, 1000);
 setTimeout(prepareTweet, 1000);
-//setTimeout(collectRedditPosts, 1000);
-//setInterval(collectRedditPosts, 86400000);
+
+//Intervals
+setInterval(prepareTweet, timer_posting);
+setInterval(collectRedditPosts, timer_get_posts);
+
 
 //Setting up the program to run
 function setup()
