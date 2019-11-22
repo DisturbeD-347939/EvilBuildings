@@ -88,10 +88,10 @@ const reddit = new Snoowrap
 //Authentication into Twitter
 var twitter = new Twit
 ({
-    consumer_key: ParsedCredentials.twitter[1].consumer_key,
-    consumer_secret: ParsedCredentials.twitter[1].consumer_secret,
-    access_token: ParsedCredentials.twitter[1].access_token_key,
-    access_token_secret: ParsedCredentials.twitter[1].access_token_secret
+    consumer_key: ParsedCredentials.twitter[2].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[2].consumer_secret,
+    access_token: ParsedCredentials.twitter[2].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[2].access_token_secret
 });
 
 //Downloading urls from the web
