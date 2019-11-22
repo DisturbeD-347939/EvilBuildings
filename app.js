@@ -7,6 +7,7 @@ var Twit = require('twit');
 //File management
 var fs = require('fs'), request = require('request');
 var fsE = require('fs-extra');
+var rimraf = require('rimraf');
 
 //MODIFY THESE TO YOUR LIKING
 var get_posts_every_x_hours = 24;
