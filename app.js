@@ -11,7 +11,7 @@ var fsE = require('fs-extra');
 //MODIFY THESE TO YOUR LIKING
 var get_posts_every_x_hours = 24;
 var posts_per_day = 6;
-var keyLocation = 'C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json';
+var keyLocation = '/home/pi/Desktop/Scripts/Keys.json';
 
 //Keys for authentication
 var Credentials = fs.readFileSync(keyLocation, 'utf-8');
