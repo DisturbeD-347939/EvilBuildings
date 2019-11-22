@@ -21,7 +21,7 @@ var ParsedCredentials = JSON.parse(Credentials);
 var postNumber = 0;
 var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000;
 var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
-posts_per_day++;
+posts_per_day += 2; //Ignore first post and add an extra one just in case
 
 //Timeouts
 setTimeout(setup, 0);
@@ -58,7 +58,7 @@ function setup()
     }
     if(!fs.existsSync('./Posts/Counter.txt'))
     {
-        fs.writeFileSync('./Posts/Counter.txt', 0);
+        fs.writeFileSync('./Posts/Counter.txt', 1);
         console.log("Created counter file!");
     }
     else
@@ -156,6 +156,7 @@ function collectRedditPosts()
             postNumber++;
         }  
     })
+    fs.writeFileSync('./Posts/Counter.txt', postNumber);
 }
 
 //Post photo and title to twitter
