@@ -26,7 +26,7 @@ posts_per_day++;
 //Timeouts
 setTimeout(setup, 0);
 setTimeout(collectRedditPosts, 1000);
-setTimeout(prepareTweet, 1000);
+setTimeout(prepareTweet, 3000);
 
 //Intervals
 setInterval(prepareTweet, timer_posting);
