@@ -37,6 +37,7 @@ setInterval(collectRedditPosts, timer_get_posts);
 function setup()
 {
     //Check for the existence of the Posts folder
+    console.log(ParsedCredentials.twitter[3].name + " being used to post!");
     console.log("Checking files...");
     if(!fs.existsSync('./Posts'))
     {
@@ -88,10 +89,10 @@ const reddit = new Snoowrap
 //Authentication into Twitter
 var twitter = new Twit
 ({
-    consumer_key: ParsedCredentials.twitter[2].consumer_key,
-    consumer_secret: ParsedCredentials.twitter[2].consumer_secret,
-    access_token: ParsedCredentials.twitter[2].access_token_key,
-    access_token_secret: ParsedCredentials.twitter[2].access_token_secret
+    consumer_key: ParsedCredentials.twitter[3].consumer_key,
+    consumer_secret: ParsedCredentials.twitter[3].consumer_secret,
+    access_token: ParsedCredentials.twitter[3].access_token_key,
+    access_token_secret: ParsedCredentials.twitter[3].access_token_secret
 });
 
 //Downloading urls from the web
