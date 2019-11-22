@@ -12,11 +12,7 @@ var rimraf = require('rimraf');
 //MODIFY THESE TO YOUR LIKING
 var get_posts_every_x_hours = 24;
 var posts_per_day = 6;
-var keyLocation = '/home/pi/Desktop/Scripts/Keys.json';
-
-//Keys for authentication
-var Credentials = fs.readFileSync(keyLocation, 'utf-8');
-var ParsedCredentials = JSON.parse(Credentials);
+var keyLocation = 'default';
 
 //Variables
 var postNumber = 0;
@@ -26,8 +22,9 @@ posts_per_day += 2; //Ignore first post and add an extra one just in case
 
 //Timeouts
 setTimeout(setup, 0);
-setTimeout(collectRedditPosts, 200);
-setTimeout(prepareTweet, 3000);
+setTimeout(authenticateAPIs, 1000);
+//setTimeout(collectRedditPosts, 500);
+//setTimeout(prepareTweet, 3000);
 
 //Intervals
 setInterval(prepareTweet, timer_posting);
@@ -38,7 +35,6 @@ setInterval(collectRedditPosts, timer_get_posts);
 function setup()
 {
     //Check for the existence of the Posts folder
-    console.log(ParsedCredentials.twitter[3].name + " being used to post!");
     console.log("Checking files...");
     if(!fs.existsSync('./Posts'))
     {
@@ -74,27 +70,41 @@ function setup()
         if (err) throw err;
         postNumber = data;
     });
-    console.log(postNumber);
+    fs.readFile('path.txt', 'utf8', function(err, data) 
+    {
+        if (err) throw err;
+        keyLocation = data;
+    });
 }
 
-//Authenticate Reddit API
-const reddit = new Snoowrap
-({
-    userAgent: 'EvilBuildings',
-    clientId: ParsedCredentials.reddit[0].client_id,
-    clientSecret: ParsedCredentials.reddit[0].client_secret,
-    username: ParsedCredentials.reddit[0].username,
-    password: ParsedCredentials.reddit[0].password
-});
+function authenticateAPIs()
+{
+    //Keys for authentication
+    var Credentials = fs.readFileSync(keyLocation, 'utf-8');
+    var ParsedCredentials = JSON.parse(Credentials);
+    console.log(ParsedCredentials.twitter[3].name + " being used to post!");
 
-//Authentication into Twitter
-var twitter = new Twit
-({
-    consumer_key: ParsedCredentials.twitter[3].consumer_key,
-    consumer_secret: ParsedCredentials.twitter[3].consumer_secret,
-    access_token: ParsedCredentials.twitter[3].access_token_key,
-    access_token_secret: ParsedCredentials.twitter[3].access_token_secret
-});
+    //Authenticate Reddit API
+    const reddit = new Snoowrap
+    ({
+        userAgent: 'EvilBuildings',
+        clientId: ParsedCredentials.reddit[0].client_id,
+        clientSecret: ParsedCredentials.reddit[0].client_secret,
+        username: ParsedCredentials.reddit[0].username,
+        password: ParsedCredentials.reddit[0].password
+    });
+
+    //Authentication into Twitter
+    var twitter = new Twit
+    ({
+        consumer_key: ParsedCredentials.twitter[3].consumer_key,
+        consumer_secret: ParsedCredentials.twitter[3].consumer_secret,
+        access_token: ParsedCredentials.twitter[3].access_token_key,
+        access_token_secret: ParsedCredentials.twitter[3].access_token_secret
+    });
+}
+
+
 
 //Downloading urls from the web
 var download = function(uri, filename, callback)
