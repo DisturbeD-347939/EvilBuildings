@@ -169,7 +169,6 @@ function prepareTweet()
     var title = "Daily Post"
 
     //Read title
-    console.log('./Posts/' + posts[0] + '/' + post[1]);
     fs.readFile('./Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
     {
         title = data;
@@ -212,7 +211,6 @@ function postTweet(image, title, post)
           console.log(error);
       }
     });
-    return;
 }
 
 function moveUsedPost(post)
