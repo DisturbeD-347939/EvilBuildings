@@ -140,9 +140,17 @@ function collectRedditPosts()
             fileFormat = fileFormat.join("");
 
             //Download the photo
-            download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function(){});
+            if(fileFormat[0] != "c" && fileFormat[1] != "o" && fileFormat[2] != "m")
+            {
+                download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function(){});
 
-            console.log("Post " + i + " created!");
+                console.log("Post " + i + " created!");
+            }
+            else
+            {
+                console.log("Wrong format on " + i);
+                rimraf('./Posts/' + i, function () { console.log('Directory ' + i + " deleted!"); });
+            }
 
             //Increment the post number
             postNumber++;
