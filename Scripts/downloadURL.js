@@ -5,7 +5,7 @@ var request = require('request');
 module.exports = 
 {
     //Downloading urls from the web
-    run: function(url, path, callback)
+    get: function(url, path, callback)
     {
         request.head(url, function(err, res, body)
         {
