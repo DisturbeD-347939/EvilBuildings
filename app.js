@@ -1,3 +1,6 @@
+//Require scripts
+var setup = require('./Scripts/setup.js');
+
 //Reddit API
 const Snoowrap = require('snoowrap');
 
@@ -5,35 +8,42 @@ const Snoowrap = require('snoowrap');
 var Twit = require('twit');
 
 //File management
-var fs = require('fs'), request = require('request');
+var fs = require('fs')
+var request = require('request');
 var fsE = require('fs-extra');
 var rimraf = require('rimraf');
-const csv = require('csv-parser');
 
 //MODIFY THESE TO YOUR LIKING
 var get_posts_every_x_hours = 24;
 var posts_per_day = 6;
-var keyLocation = 'default';
 
 //Variables
-var postNumber = 0;
 var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000;
 var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
 posts_per_day += 2; //Ignore first post and add an extra one just in case
+
 var reddit, twitter;
-var countries = [];
+var postNumber, keyLocation, countries;
+
+//Retrieving functions data
+setup.run(function(data)
+{
+    console.log(data);
+    postNumber = data[0];
+    keyLocation = data[1];
+    countries = data[2];
+});
 
 //Timeouts
-setImmediate(setup);
 setImmediate(checkPath);
-//setTimeout(authenticateAPIs, 1000);
+setTimeout(authenticateAPIs, 3000);
 //setTimeout(collectRedditPosts, 5000);
 //setTimeout(prepareTweet, 8000);
 
 //Gets the path to the keys file
 function checkPath()
 {
-    if(keyLocation == 'default')
+    if(keyLocation == null)
     {
         setTimeout(checkPath,100);
     }
@@ -48,66 +58,6 @@ function checkPath()
 //Intervals
 setInterval(prepareTweet, timer_posting);
 setInterval(collectRedditPosts, timer_get_posts);
-
-
-//Setting up the program to run
-function setup()
-{
-    //Check for the existence of the Posts folder
-    console.log("Checking files...");
-    if(!fs.existsSync('./Posts'))
-    {
-        fs.mkdirSync('./Posts');
-        console.log("Created posts folder!");
-    }
-    else 
-    {
-        console.log("Posts folder checked...");
-    }
-    if(!fs.existsSync('./Used'))
-    {
-        fs.mkdirSync('./Used');
-        console.log("Created used folder!");
-    }
-    else 
-    {
-        console.log("Used folder checked...");
-    }
-    if(!fs.existsSync('./Posts/Counter.txt'))
-    {
-        fs.writeFileSync('./Posts/Counter.txt', 1);
-        console.log("Created counter file!");
-    }
-    else
-    {
-        console.log("Counter file checked...");
-    }
-
-    //Read txt files
-    fs.readFile('./Posts/Counter.txt', 'utf8', function(err, data) 
-    {
-        if (err) throw err;
-        postNumber = data;
-    });
-    fs.readFile('path.txt', 'utf8', function(err, data) 
-    {
-        if (err) throw err;
-        keyLocation = data;
-        console.log(keyLocation);
-    });
-
-    //Read csv files
-    fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
-    {
-        countries.push([row.Country, row.Name]);
-    }).on('end', () => 
-    {
-        for(var i = 0; i < countries.length; i++)
-        {
-            console.log(countries[i]);
-        }
-    });
-}
 
 function authenticateAPIs()
 {
