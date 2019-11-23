@@ -1,11 +1,6 @@
 //Require scripts
 var setup = require('./Scripts/setup.js');
-
-//Reddit API
-const Snoowrap = require('snoowrap');
-
-//Twitter API
-var Twit = require('twit');
+var auth = require('./Scripts/authenticate.js');
 
 //File management
 var fs = require('fs')
@@ -58,34 +53,6 @@ function checkPath()
 //Intervals
 setInterval(prepareTweet, timer_posting);
 setInterval(collectRedditPosts, timer_get_posts);
-
-function authenticateAPIs()
-{
-    //Keys for authentication
-    var Credentials = fs.readFileSync(keyLocation, 'utf-8');
-    var ParsedCredentials = JSON.parse(Credentials);
-    console.log(ParsedCredentials.twitter[3].name + " being used to post!");
-
-    //Authenticate Reddit API
-    var r = new Snoowrap
-    ({
-        userAgent: 'EvilBuildings',
-        clientId: ParsedCredentials.reddit[0].client_id,
-        clientSecret: ParsedCredentials.reddit[0].client_secret,
-        username: ParsedCredentials.reddit[0].username,
-        password: ParsedCredentials.reddit[0].password
-    });
-
-    //Authentication into Twitter
-    var t = new Twit
-    ({
-        consumer_key: ParsedCredentials.twitter[3].consumer_key,
-        consumer_secret: ParsedCredentials.twitter[3].consumer_secret,
-        access_token: ParsedCredentials.twitter[3].access_token_key,
-        access_token_secret: ParsedCredentials.twitter[3].access_token_secret
-    });
-    return [r, t];
-}
 
 //Downloading urls from the web
 var download = function(uri, filename, callback)
