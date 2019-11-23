@@ -8,6 +8,7 @@ var Twit = require('twit');
 var fs = require('fs'), request = require('request');
 var fsE = require('fs-extra');
 var rimraf = require('rimraf');
+const csv = require('csv-parser');
 
 //MODIFY THESE TO YOUR LIKING
 var get_posts_every_x_hours = 24;
@@ -82,7 +83,7 @@ function setup()
         console.log("Counter file checked...");
     }
 
-    //Read files
+    //Read txt files
     fs.readFile('./Posts/Counter.txt', 'utf8', function(err, data) 
     {
         if (err) throw err;
@@ -95,6 +96,16 @@ function setup()
         console.log(keyLocation);
     });
 
+    //Read csv files
+    fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
+    {
+        countries.push([row.Country, row.Name]);
+    }).on('end', () => 
+    {
+        for(var i = 0; i < countries.length; i++)
+        {
+            console.log(countries[i]);
+        }
     });
 }
 
