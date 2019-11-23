@@ -18,37 +18,28 @@ var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
 posts_per_day += 2; //Ignore first post and add an extra one just in case
 
 var reddit, twitter;
-var postNumber, keyLocation, countries;
+var postNumber, keyPath = 'default', countries;
 
-//Retrieving functions data
+//RUN
 setup.run(function(data)
 {
-    console.log(data);
-    postNumber = data[0];
-    keyLocation = data[1];
-    countries = data[2];
+    function setVariables(callback)
+    {
+        postNumber = data[0];
+        keyPath = data[1];
+        countries = data[2];
+        callback();
+    }
+    
+    setVariables(function()
+    {
+        auth.run(keyPath, function(data)
+        {
+            console.log("AUTH SUCCESS");
+        });
+    });
+    
 });
-
-//Timeouts
-setImmediate(checkPath);
-setTimeout(authenticateAPIs, 3000);
-//setTimeout(collectRedditPosts, 5000);
-//setTimeout(prepareTweet, 8000);
-
-//Gets the path to the keys file
-function checkPath()
-{
-    if(keyLocation == null)
-    {
-        setTimeout(checkPath,100);
-    }
-    else
-    {
-        result = authenticateAPIs();
-        reddit = result[0];
-        twitter = result[1];
-    }
-}
 
 //Intervals
 setInterval(prepareTweet, timer_posting);
