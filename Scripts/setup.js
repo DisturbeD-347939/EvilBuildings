@@ -8,12 +8,12 @@ function createDir(path)
     {
         fs.mkdirSync(path, function()
         {
-            console.log(path + " created...");
+            console.log(path + " CREATED");
         });
     }
     else 
     {
-        console.log(path + " is checked!");
+        console.log(path + " SUCCESS");
     }
 }
 
@@ -23,12 +23,12 @@ function createFile(path, data)
     {
         fs.writeFileSync(path, data, function()
         {
-            console.log(path + " created...");
+            console.log(path + " CREATED");
         });
     }
     else 
     {
-        console.log(path + " is checked!");
+        console.log(path + " SUCCESS");
     }
 }
 
@@ -60,34 +60,37 @@ module.exports =
         //Check for the existence of the necessary files
         createFile('./Posts/Counter.txt', 0);
 
-        //Read txt files
-        readFile('./Posts/Counter.txt', function(data)
+        function checkCallbacks(callback)
         {
-            postNumber = data;
-            check[0] = 1;
-            console.log("Counter replied with " + postNumber);
-        });
-        readFile('path.txt', function(data)
-        {
-            keyLocation = data;
-            check[1] = 1;
-            console.log("Key replied with " + keyLocation);
-        });
+            readFile('./Posts/Counter.txt', function(data)
+            {
+                postNumber = data;
+                console.log("Counter replied with SUCCESS");
 
-        //Read csv files
-        fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
-        {
-            countries.push([row.Country, row.Name]);
-        }).on('end', () => 
-        {
-            console.log("Countries retrieved!");
-            check[2] = 1;
-        });
+                //Next callback
+                readFile('path.txt', function(data)
+                {
+                    keyLocation = data;
+                    console.log("Key replied with SUCCESS"); 
 
-        if(check == [1,1,1])
+                    //Next callback
+                    fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
+                    {
+                        countries.push([row.Country, row.Name]);
+                    }).on('end', () => 
+                    {
+                        console.log("Countries replied with SUCCESS");
+                        callback(postNumber, keyLocation, countries);
+                        return;
+                    });
+                });
+            });
+        }
+
+        checkCallbacks(function(postNumber, keyLocation, countries)
         {
-            callback(postNumber, keyLocation, countries);
-        }        
+            callback([postNumber, keyLocation, countries]);
+        })
     }
 }
 
