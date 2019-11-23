@@ -8,14 +8,16 @@ var request = require('request');
 var fsE = require('fs-extra');
 var rimraf = require('rimraf');
 
-//MODIFY THESE TO YOUR LIKING
-var get_posts_every_x_hours = 24;
-var posts_per_day = 6;
+//Get config file
+var config = fs.readFileSync('config.json', 'utf-8');
+var configData = JSON.parse(config);
 
 //Variables
-var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000;
-var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
-posts_per_day += 2; //Ignore first post and add an extra one just in case
+var get_posts = configData.reddit[0].retrieve_posts_every_x_hours; //get variable from config.json
+var posts_per_day = configData.twitter[0].tweets_per_day; //get variable from config.json
+var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000; //calculate posting time in milliseconds
+var timer_get_posts = ((get_posts * 60) * 60) * 1000; //calculate retrieving posts time in milliseconds
+posts_per_day += 2; //Ignore first post (rules and text) and add an extra one just in case
 
 var reddit, twitter;
 var postNumber, keyPath = 'default', countries;
