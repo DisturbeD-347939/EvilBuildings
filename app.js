@@ -1,10 +1,10 @@
 //Require scripts
 var setup = require('./Scripts/setup.js');
 var auth = require('./Scripts/authenticate.js');
+var download = require('./Scripts/downloadURL.js');
 
 //File management
 var fs = require('fs')
-var request = require('request');
 var fsE = require('fs-extra');
 var rimraf = require('rimraf');
 
@@ -47,15 +47,6 @@ setup.run(function(data)
 setInterval(prepareTweet, timer_posting);
 setInterval(collectRedditPosts, timer_get_posts);
 
-//Downloading urls from the web
-var download = function(uri, filename, callback)
-{
-    request.head(uri, function(err, res, body)
-    {
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-    });
-};
-
 //Download and organize reddit posts from r/evilbuildings
 function collectRedditPosts()
 {
@@ -96,7 +87,7 @@ function collectRedditPosts()
             //Download the photo
             if(fileFormat[0] != "c" && fileFormat[1] != "o" && fileFormat[2] != "m")
             {
-                download(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function(){});
+                download.run(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function(){});
 
                 console.log("Post " + i + " created!");
             }
