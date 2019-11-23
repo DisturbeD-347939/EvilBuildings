@@ -23,12 +23,12 @@ var reddit, twitter;
 var countries = [];
 
 //Timeouts
-setTimeout(setup, 0);
-setTimeout(authenticateAPIs, 1000);
-//setTimeout(collectRedditPosts, 500);
-//setTimeout(prepareTweet, 3000);
 setImmediate(setup);
 setImmediate(checkPath);
+//setTimeout(authenticateAPIs, 1000);
+//setTimeout(collectRedditPosts, 5000);
+//setTimeout(prepareTweet, 8000);
+
 //Gets the path to the keys file
 function checkPath()
 {
@@ -92,6 +92,9 @@ function setup()
     {
         if (err) throw err;
         keyLocation = data;
+        console.log(keyLocation);
+    });
+
     });
 }
 
