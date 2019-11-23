@@ -9,6 +9,7 @@ module.exports =
 {
     run: function(keyPath, callback)
     {
+        console.log("Starting AUTH");
         //Keys for authentication
         var Credentials = fs.readFileSync(keyPath, 'utf-8');
         var ParsedCredentials = JSON.parse(Credentials);
@@ -33,6 +34,6 @@ module.exports =
             access_token_secret: ParsedCredentials.twitter[3].access_token_secret
         });
 
-        callback(r, t);
+        callback([r, t]);
     }
 }
