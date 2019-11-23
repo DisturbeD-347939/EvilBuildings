@@ -50,8 +50,7 @@ module.exports =
     run: function(callback)
     {
         //Variables
-        var postNumber, keyLocation, countries = [];
-        check = [0,0,0];
+        var postNumber, countries = [];
 
         //Check for the existence of the necessary folders
         createDir('./Posts');
@@ -68,28 +67,21 @@ module.exports =
                 console.log("Counter replied with SUCCESS");
 
                 //Next callback
-                readFile('path.txt', function(data)
+                fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
                 {
-                    keyLocation = data;
-                    console.log("Key replied with SUCCESS"); 
-
-                    //Next callback
-                    fs.createReadStream('countries_data.csv').pipe(csv()).on('data', (row) => 
-                    {
-                        countries.push([row.Country, row.Name]);
-                    }).on('end', () => 
-                    {
-                        console.log("Countries replied with SUCCESS");
-                        callback(postNumber, keyLocation, countries);
-                        return;
-                    });
+                    countries.push([row.Country, row.Name]);
+                }).on('end', () => 
+                {
+                    console.log("Countries replied with SUCCESS");
+                    callback(postNumber, countries);
+                    return;
                 });
             });
         }
 
-        checkCallbacks(function(postNumber, keyLocation, countries)
+        checkCallbacks(function(postNumber, countries)
         {
-            callback([postNumber, keyLocation, countries]);
+            callback([postNumber, countries]);
         })
     }
 }
