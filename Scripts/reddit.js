@@ -1,5 +1,5 @@
-//Dowload module
-var download = require('C:\\Users\\Ricar\\Documents\\GitHub\\NodeJS\\EvilBuildings\\Scripts\\downloadURL.js');
+ //Dowload module
+var download = require('./downloadURL.js');
 
 //File management
 var fs = require('fs');
