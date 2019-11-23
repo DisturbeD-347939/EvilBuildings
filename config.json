@@ -1,0 +1,20 @@
+{
+    "twitter": 
+    [
+        {
+            "tweets_per_day": "6"
+        }
+    ],
+    "reddit":
+    [
+        {
+            "retrieve_posts_every_x_hours": "24"
+        }
+    ],
+    "config":
+    [
+        {
+            "keys_path": "C:\\Users\\Ricar\\Desktop\\Etc\\Keys.json"
+        }
+    ]
+}
