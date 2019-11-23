@@ -19,12 +19,30 @@ var postNumber = 0;
 var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000;
 var timer_get_posts = ((get_posts_every_x_hours * 60) * 60) * 1000;
 posts_per_day += 2; //Ignore first post and add an extra one just in case
+var reddit, twitter;
+var countries = [];
 
 //Timeouts
 setTimeout(setup, 0);
 setTimeout(authenticateAPIs, 1000);
 //setTimeout(collectRedditPosts, 500);
 //setTimeout(prepareTweet, 3000);
+setImmediate(setup);
+setImmediate(checkPath);
+//Gets the path to the keys file
+function checkPath()
+{
+    if(keyLocation == 'default')
+    {
+        setTimeout(checkPath,100);
+    }
+    else
+    {
+        result = authenticateAPIs();
+        reddit = result[0];
+        twitter = result[1];
+    }
+}
 
 //Intervals
 setInterval(prepareTweet, timer_posting);
@@ -85,7 +103,7 @@ function authenticateAPIs()
     console.log(ParsedCredentials.twitter[3].name + " being used to post!");
 
     //Authenticate Reddit API
-    const reddit = new Snoowrap
+    var r = new Snoowrap
     ({
         userAgent: 'EvilBuildings',
         clientId: ParsedCredentials.reddit[0].client_id,
@@ -95,16 +113,15 @@ function authenticateAPIs()
     });
 
     //Authentication into Twitter
-    var twitter = new Twit
+    var t = new Twit
     ({
         consumer_key: ParsedCredentials.twitter[3].consumer_key,
         consumer_secret: ParsedCredentials.twitter[3].consumer_secret,
         access_token: ParsedCredentials.twitter[3].access_token_key,
         access_token_secret: ParsedCredentials.twitter[3].access_token_secret
     });
+    return [r, t];
 }
-
-
 
 //Downloading urls from the web
 var download = function(uri, filename, callback)
@@ -118,6 +135,7 @@ var download = function(uri, filename, callback)
 //Download and organize reddit posts from r/evilbuildings
 function collectRedditPosts()
 {
+    console.log(reddit);
     reddit.getSubreddit('evilbuildings', posts_per_day).getHot().then(posts => 
     {
         for(var i = 1; i < posts_per_day; i++)
