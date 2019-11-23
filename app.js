@@ -35,7 +35,7 @@ posts_per_day += 2; //Ignore first post (rules and text) and add an extra one ju
 
 var twitter;
 
-setTimeout(run, 3000);
+setTimeout(run, 2000);
 
 function run()
 {
