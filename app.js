@@ -57,12 +57,10 @@ function run()
                 console.log("AUTH SUCCESS");
                 //setInterval(prepareTweet, timer_posting);
                 //setInterval(r.collect(data[0], posts_per_day,postNumber, ), timer_get_posts);
-                function collectTweets()
+                r.collect(data[0], 'evilbuildings', posts_per_day,postNumber, function()
                 {
-                    r.collect(data[0], posts_per_day,postNumber);
-                }
-
-                setTimeout(collectTweets, 500);
+                    //console.log("Done");
+                })
             });
         });
     });
