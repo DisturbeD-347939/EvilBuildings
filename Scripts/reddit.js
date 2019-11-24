@@ -91,6 +91,25 @@ function createPost(posts, postNumber, i, callback)
         });
     });
 }
+
+//Get posts
+function getPosts(reddit, subreddit, posts_per_day, postNumber, callback)
+{
+    reddit.getSubreddit(subreddit, posts_per_day).getHot().then(posts => 
+    {
+        console.log(posts_per_day);
+        for(var i = 1; i < posts_per_day; i++)
+        {
+            createPost(posts, postNumber, i, function(data)
+            {
+                console.log("Post " + data + " DOWNLOADED");
+            });
+            postNumber++;
+        }
+        callback();
+        fs.writeFileSync('./Posts/Counter.txt', postNumber);
+    });
+}
         });
         console.log("COLLECT SUCCESSFUL");
     }
