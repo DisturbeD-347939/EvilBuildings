@@ -63,12 +63,12 @@ function post(twitter, data, callback)
                 {
                     console.log("Tweet posted!");
 
-                    var currentPath = __dirname.split("\\");
+                    var currentPath = __dirname.split("/");
                     currentPath.splice(-1, currentPath.length-1);
                     currentPath = currentPath.join("/");
                     currentPath = currentPath + '/Posts/' + data[2] + '/';
 
-                    var newPath = __dirname.split("\\");
+                    var newPath = __dirname.split("/");
                     newPath.splice(-1, newPath.length-1);
                     newPath = newPath.join("/");
                     newPath = newPath + '/Used/' + data[2] + '/';
