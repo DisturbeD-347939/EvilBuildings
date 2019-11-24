@@ -6,7 +6,6 @@ var t = require('./Scripts/twitter.js');
 
 //File management
 var fs = require('fs')
-var fsE = require('fs-extra');
 
 //Get config file variables
 var keyPath = 'keys.json';
