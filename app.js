@@ -110,18 +110,3 @@ function postTweet(image, title, post)
       }
     });
 }
-
-function moveUsedPost(post)
-{
-    fsE.move('./Posts/' + post + '/', './Used/' + post + '/', err =>
-    {
-        if(err)
-        {
-            console.log(err);
-        }
-        else
-        {
-            console.log("Moved to used tweets folder");
-        }
-    })
-}
