@@ -6,7 +6,7 @@ var fsE = require('fs-extra');
 function prepare(callback)
 {
     //Check path
-    var path = __dirname.split("\\");
+    var path = __dirname.split("/");
     path.splice(-1, path.length-1);
     path = path.join("/");
 
