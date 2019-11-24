@@ -36,3 +36,51 @@ function moveDir(oldPath, newPath)
         }
     })
 }
+
+function post(twitter, data, callback)
+{
+    // Make post request to Twitter
+    twitter.post('media/upload', {media: data[1]}, function(error, media, response) 
+    {
+
+        if (!error) 
+        {
+            //Prepare the tweet
+            var status = 
+            {
+                status: data[0],
+                media_ids: media.media_id_string
+            }
+
+            //Post the tweet
+            twitter.post('statuses/update', status, function(error, tweet, response) 
+            {
+                if (error) 
+                {
+                    console.log(error);
+                }
+                else
+                {
+                    console.log("Tweet posted!");
+
+                    var currentPath = __dirname.split("\\");
+                    currentPath.splice(-1, currentPath.length-1);
+                    currentPath = currentPath.join("/");
+                    currentPath = currentPath + '/Posts/' + data[2] + '/';
+
+                    var newPath = __dirname.split("\\");
+                    newPath.splice(-1, newPath.length-1);
+                    newPath = newPath.join("/");
+                    newPath = newPath + '/Used/' + data[2] + '/';
+
+                    moveDir(currentPath, newPath);
+                    callback();
+                }
+            });
+        }
+        else
+        {
+            console.log(error);
+        }
+    });
+}
