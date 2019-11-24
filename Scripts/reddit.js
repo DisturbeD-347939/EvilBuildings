@@ -51,6 +51,18 @@ function createDir(path, callback)
     }
     else {callback();}
 }
+
+//Create file
+function createFile(path, data, callback)
+{
+    if(!fs.existsSync(path))
+    {
+        fs.writeFileSync(path, data, function(){callback();});
+        callback();
+    }
+    else {callback();}
+}
+
                 {
                     download.get(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function()
                     {
