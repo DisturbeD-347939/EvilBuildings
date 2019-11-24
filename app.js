@@ -54,11 +54,20 @@ function run()
             auth.run(keyPath, function(data)
             {
                 console.log("AUTH SUCCESS");
-                //setInterval(prepareTweet, timer_posting);
-                //setInterval(r.collect(data[0], posts_per_day,postNumber, ), timer_get_posts);
-                r.collect(data[0], 'evilbuildings', posts_per_day,postNumber, function()
+                r.collect(data[0], configData.reddit[0].subreddit, posts_per_day, postNumber, function()
                 {
-                    //console.log("Done");
+                    setTimeout(prepareTweet, 5000);
+
+                    function prepareTweet()
+                    {
+                        t.post(data[1], function()
+                        {
+                            console.log("Posted SUCCESS");
+                            console.log("Starting intervals");
+                            setInterval(() => r.collect(data[0], configData.reddit[0].subreddit, posts_per_day, postNumber, function(){}), timer_get_posts);
+                            setInterval(() => t.post(data[1], function(){}), timer_posting);
+                        })
+                    }
                 })
             });
         });
