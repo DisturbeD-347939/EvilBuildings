@@ -63,28 +63,34 @@ function createFile(path, data, callback)
     else {callback();}
 }
 
+//Create post
+function createPost(posts, postNumber, i, callback)
+{
+    var path = __dirname.split("\\");
+    path.splice(-1, path.length-1);
+    path = path.join("/");
+
+    createDir(path + '/Posts/' + postNumber + "/", function()
+    {
+        createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
+        {
+            checkFormat(posts, i, function(data)
+            {
+                if(data[0])
                 {
-                    download.get(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function()
+                    download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
                     {
-                        console.log('Post ' + postNumber + " created!"); 
+                        callback(postNumber); 
                     });
-                    fs.writeFileSync('./Posts/Counter.txt', postNumber);
-                    postNumber++;
                 }
                 else 
                 {
-                    console.log("Wrong format on " + postNumber);
-                    rimraf('./Posts/' + postNumber, function () 
-                    {
-                        console.log('Directory ' + postNumber + " deleted!"); 
-                    });
-                    fs.writeFileSync('./Posts/Counter.txt', postNumber);
-                    postNumber++;
+                    callback();
                 }
-    
-                //Increment the post number
-                
-            }  
+            });
+        });
+    });
+}
         });
         console.log("COLLECT SUCCESSFUL");
     }
