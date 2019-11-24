@@ -69,7 +69,7 @@ function createPost(posts, postNumber, i, callback)
 {
     function getPath(callback)
     {
-        var path = __dirname.split("\\");
+        var path = __dirname.split("/");
         path.splice(-1, path.length-1);
         path = path.join("/");
         callback(path);
