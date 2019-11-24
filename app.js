@@ -2,6 +2,7 @@
 var setup = require('./Scripts/setup.js');
 var auth = require('./Scripts/authenticate.js');
 var r = require('./Scripts/reddit.js');
+var t = require('./Scripts/twitter.js');
 
 //File management
 var fs = require('fs')
