@@ -110,7 +110,16 @@ function getPosts(reddit, subreddit, posts_per_day, postNumber, callback)
         fs.writeFileSync('./Posts/Counter.txt', postNumber);
     });
 }
+
+module.exports =
+{
+    //Download and organize reddit posts from r/evilbuildings
+    collect: function(reddit, subreddit, posts_per_day, postNumber, callback)
+    {
+        getPosts(reddit, subreddit, posts_per_day, postNumber, function()
+        {
+            console.log("Collect SUCCESSFUL");
+            callback();
         });
-        console.log("COLLECT SUCCESSFUL");
     }
 }
