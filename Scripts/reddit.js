@@ -88,7 +88,7 @@ function createPost(posts, postNumber, i, callback)
                 console.log("checkFormat");
                 checkFormat(posts, i, function(data)
                 {
-                    if(data[0])
+                    if(data[0] && data[1] != "")
                     {
                         download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
                         {
@@ -97,7 +97,7 @@ function createPost(posts, postNumber, i, callback)
                     }
                     else 
                     {
-                        callback();
+                        callback((postNumber + " FAILED "));
                     }
                 });
             });

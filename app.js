@@ -9,7 +9,7 @@ var fs = require('fs')
 
 //Get config file variables
 var keyPath = 'keys.json';
-var get_posts, posts_per_day;
+var get_posts, posts_per_day = 0, timer_posting, timer_get_posts;
 var configFile;
 var configData;
 
@@ -21,17 +21,24 @@ setImmediate(function()
 
 setTimeout(function()
 {
-    console.log(configData);
-    keyPath = configData.config[0].keys_path;
-    get_posts = configData.reddit[0].retrieve_posts_every_x_hours;
-    posts_per_day = configData.twitter[0].tweets_per_day;
-},1000);
+    function read(callback)
+    {
+        keyPath = configData.config[0].keys_path;
+        get_posts = configData.reddit[0].retrieve_posts_every_x_hours;
+        posts_per_day += configData.twitter[0].tweets_per_day;
+        console.log(posts_per_day);
+        callback();
+    }
 
-
-//Variables
-var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000; //calculate posting time in milliseconds
-var timer_get_posts = ((get_posts * 60) * 60) * 1000; //calculate retrieving posts time in milliseconds
-posts_per_day += 4; //Ignore first post (rules and text) and add an extra one just in case
+    read(function()
+    {
+        timer_posting = Math.trunc((((24 / posts_per_day) * 60) * 60) * 1000); //calculate posting time in milliseconds
+        timer_get_posts = ((get_posts * 60) * 60) * 1000; //calculate retrieving posts time in milliseconds
+        console.log("Timers = " + timer_posting + " | " + timer_get_posts);
+        posts_per_day += 4; //Ignore first post (rules and text) and add an extra one just in case
+    })
+    
+},500);
 
 setTimeout(run, 2000);
 
