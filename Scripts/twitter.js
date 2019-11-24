@@ -84,3 +84,18 @@ function post(twitter, data, callback)
         }
     });
 }
+
+module.exports =
+{
+    //Post tweets
+    post: function(twitter, callback)
+    {
+        prepare(function(data)
+        {
+            post(twitter, data, function()
+            {
+                callback();
+            })
+        })
+    }
+}
