@@ -22,3 +22,17 @@ function prepare(callback)
     });
 }
 
+function moveDir(oldPath, newPath)
+{
+    fsE.move(oldPath, newPath, err =>
+    {
+        if(err)
+        {
+            //console.log(err);
+        }
+        else
+        {
+            console.log("Moved to used tweets folder");
+        }
+    })
+}
