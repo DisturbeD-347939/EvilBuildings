@@ -44,6 +44,7 @@ function checkFormat(posts, i, callback)
 //Create directory
 function createDir(path, callback)
 {
+    console.log(path);
     if(!fs.existsSync(path))
     {
         fs.mkdirSync(path, function(){callback();});
