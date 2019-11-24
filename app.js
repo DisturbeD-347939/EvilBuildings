@@ -49,7 +49,8 @@ function run()
         //Set variables then run config then run auth
         setVariables(function()
         {
-            console.log("Variables set!");
+            console.log("Variables SUCCESS");
+            //Authenticate keys
             auth.run(keyPath, function(data)
             {
                 console.log("AUTH SUCCESS");
