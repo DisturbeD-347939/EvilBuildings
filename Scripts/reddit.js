@@ -67,35 +67,42 @@ function createFile(path, data, callback)
 //Create post
 function createPost(posts, postNumber, i, callback)
 {
-    var path = __dirname.split("\\");
-    path.splice(-1, path.length-1);
-    path = path.join("/");
-
-    console.log("createDir");
-    createDir(path + '/Posts/' + postNumber, function()
+    function getPath(callback)
     {
-        console.log("SUCCESS");
-        console.log("createFile");
-        createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
+        var path = __dirname.split("\\");
+        path.splice(-1, path.length-1);
+        path = path.join("/");
+        callback(path);
+    }
+
+    getPath(function(data)
+    {
+        console.log("createDir");
+        createDir(data + '/Posts/' + postNumber, function()
         {
             console.log("SUCCESS");
-            console.log("checkFormat");
-            checkFormat(posts, i, function(data)
+            console.log("createFile");
+            createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
             {
-                if(data[0])
+                console.log("SUCCESS");
+                console.log("checkFormat");
+                checkFormat(posts, i, function(data)
                 {
-                    download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
+                    if(data[0])
                     {
-                        callback(postNumber); 
-                    });
-                }
-                else 
-                {
-                    callback();
-                }
+                        download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
+                        {
+                            callback(postNumber); 
+                        });
+                    }
+                    else 
+                    {
+                        callback();
+                    }
+                });
             });
         });
-    });
+    })
 }
 
 //Get posts
