@@ -11,7 +11,7 @@ function checkFormat(posts, i, callback)
     var fileFormat = "";
     for(var j = posts[i].url.length - 1; j > 0; j--)
     {
-        reddit.getSubreddit('evilbuildings', posts_per_day).getHot().then(posts => 
+        if(posts[i].url[j] != ".")
         {
             fileFormat += posts[i].url[j];
         }
