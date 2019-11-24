@@ -41,8 +41,16 @@ function checkFormat(posts, i, callback)
     }
 }
 
-                //Download photo
-                if(fileFormat.length == 3)
+//Create directory
+function createDir(path, callback)
+{
+    if(!fs.existsSync(path))
+    {
+        fs.mkdirSync(path, function(){callback();});
+        callback();
+    }
+    else {callback();}
+}
                 {
                     download.get(posts[i].url, './Posts/' + postNumber + '/image.' + fileFormat, function()
                     {
