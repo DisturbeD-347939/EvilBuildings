@@ -70,10 +70,15 @@ function createPost(posts, postNumber, i, callback)
     path.splice(-1, path.length-1);
     path = path.join("/");
 
+    console.log("createDir");
     createDir(path + '/Posts/' + postNumber, function()
     {
+        console.log("SUCCESS");
+        console.log("createFile");
         createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
         {
+            console.log("SUCCESS");
+            console.log("checkFormat");
             checkFormat(posts, i, function(data)
             {
                 if(data[0])
