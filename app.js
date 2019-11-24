@@ -31,9 +31,7 @@ setTimeout(function()
 //Variables
 var timer_posting = (((24 / posts_per_day) * 60) * 60) * 1000; //calculate posting time in milliseconds
 var timer_get_posts = ((get_posts * 60) * 60) * 1000; //calculate retrieving posts time in milliseconds
-posts_per_day += 2; //Ignore first post (rules and text) and add an extra one just in case
-
-var twitter;
+posts_per_day += 4; //Ignore first post (rules and text) and add an extra one just in case
 
 setTimeout(run, 2000);
 
