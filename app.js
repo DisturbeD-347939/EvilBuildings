@@ -74,25 +74,6 @@ function run()
     });
 }
 
-
-
-//Post photo and title to twitter
-function prepareTweet()
-{
-    //Check which one is the oldest post and collect it's image and title
-    var posts = fs.readdirSync('./Posts');
-    var post = fs.readdirSync('./Posts/' + posts[0]);
-    var image = fs.readFileSync("./Posts/" + posts[0] + "/" + post[0], { encoding: 'base64' });
-    var title = "Daily Post"
-
-    //Read title
-    fs.readFile('./Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
-    {
-        title = data;
-    });
-    setTimeout(() => postTweet(image, title, posts[0]), 2000);
-}
-
 function postTweet(image, title, post)
 {
     // Make post request to Twitter
