@@ -70,7 +70,7 @@ function createPost(posts, postNumber, i, callback)
     path.splice(-1, path.length-1);
     path = path.join("/");
 
-    createDir(path + '/Posts/' + postNumber + "/", function()
+    createDir(path + '/Posts/' + postNumber, function()
     {
         createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
         {
