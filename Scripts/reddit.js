@@ -169,7 +169,7 @@ function getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, c
     {
         for(var i = 1; i < posts_per_day; i++)
         {
-            createPost(posts, postNumber, i, function(data)
+            createPost(posts, postNumber, i, countriesList, citiesList, function(data)
             {
                 console.log("Post " + data + " DOWNLOADED");
             });
