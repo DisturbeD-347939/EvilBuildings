@@ -66,6 +66,46 @@ function createFile(path, data, callback)
     else {callback();}
 }
 
+//Get locations
+function checkLocation(countriesList, citiesList, content, callback)
+{
+    content = content.replace(/[^\w\s]/gi, '')
+    splitContent = content.split(" ");
+    function loopData(splitContent, callback)
+    {
+        var data = "";
+
+        function getCity(data, callback)
+        {
+            for(var i = 0; i < splitContent.length; i++)
+            {
+                for(var j = 0; j < citiesList.length; j++)
+                {
+                    var citiesLists = citiesList[j];
+                    if(splitContent[i] == citiesList[j][0])
+                    {
+                        data += splitContent[i] + ", " + citiesList[j][1];
+                    }
+                }
+            }
+            callback(data);
+        }
+        
+        console.log("*-------------------*");
+        console.log(data);
+        getCity(data, function(city)
+        {
+            data += city;
+            callback(data);
+        })
+    }
+    
+    loopData(splitContent, function(data)
+    {
+        callback(data);
+    });
+}
+
 //Create post
 function createPost(posts, postNumber, i, callback)
 {
