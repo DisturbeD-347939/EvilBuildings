@@ -35,6 +35,18 @@ function prepare(callback)
     }
     
 }
+
+//Provide an image with tags
+function getTags(pass, twitter, callback)
+{
+    var extension = fs.readFileSync(pass[3] + pass[2] + "/config.txt");
+    console.log(extension);
+    iR.classify(pass[3] + pass[2] + "/image." + extension, function(data)
+    {
+        iR.getTags(data, function(tags)
+        {
+            callback(tags, twitter, pass);
+        })
     });
 }
 
