@@ -63,7 +63,7 @@ function run()
             auth.run(keyPath, function(data)
             {
                 console.log("AUTH SUCCESS");
-                r.collect(data[0], configData.reddit[0].subreddit, posts_per_day, postNumber, function()
+                r.collect(data[0], configData.reddit[0].subreddit, posts_per_day, postNumber, countriesList, citiesList, function()
                 {
                     setTimeout(prepareTweet, 5000);
 
