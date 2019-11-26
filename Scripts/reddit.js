@@ -165,7 +165,7 @@ function createPost(posts, postNumber, i, countriesList, citiesList, callback)
 //Get posts
 function getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, citiesList, callback)
 {
-    reddit.getSubreddit(subreddit, posts_per_day).getHot().then(posts => 
+    reddit.getSubreddit(subreddit, posts_per_day).getRising().then(posts => 
     {
         console.log(posts_per_day);
         for(var i = 1; i < posts_per_day; i++)
