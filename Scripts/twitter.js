@@ -82,8 +82,11 @@ function post(twitter, data, callback)
                     newPath = newPath.join("/");
                     newPath = newPath + '/Used/' + data[2] + '/';
 
-                    moveDir(currentPath, newPath);
-                    callback();
+                    console.log("Moving dir");
+                    moveDir(currentPath, newPath, function()
+                    {
+                        callback();
+                    });  
                 }
             });
         }
