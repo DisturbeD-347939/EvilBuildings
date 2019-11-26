@@ -6,7 +6,7 @@ var fs = require('fs');
 var rimraf = require('rimraf');
 
 //Check format
-function checkFormat(posts, i, callback)
+function checkFormat(posts, i, postNumber, callback)
 {
     var fileFormat = "";
     for(var j = posts[i].url.length - 1; j > 0; j--)
