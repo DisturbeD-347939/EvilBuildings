@@ -26,6 +26,7 @@ function checkFormat(posts, i, postNumber, callback)
     fileFormat = fileFormat.reverse();
     fileFormat = fileFormat.join("");
 
+    console.log(fileFormat);
     //Check file extension
     if(fileFormat.length == 3)
     {
@@ -33,6 +34,8 @@ function checkFormat(posts, i, postNumber, callback)
     }
     else 
     {
+        console.log("Deleting directory");
+        console.log('./Posts/' + postNumber);
         rimraf('./Posts/' + postNumber, function () 
         {
             console.log('Directory ' + postNumber + " deleted!"); 
