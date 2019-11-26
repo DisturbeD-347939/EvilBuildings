@@ -50,7 +50,7 @@ module.exports =
     run: function(callback)
     {
         //Variables
-        var postNumber, countries = [];
+        var postNumber, countries = [], cities = [];
 
         //Check for the existence of the necessary folders
         createDir('./Posts');
@@ -73,8 +73,15 @@ module.exports =
                 }).on('end', () => 
                 {
                     console.log("Countries replied with SUCCESS");
-                    callback(postNumber, countries);
-                    return;
+                    fs.createReadStream('cities_data.csv').pipe(csv()).on('data', (row) => 
+                    {
+                        cities.push([row.name, row.country]);
+                    }).on('end', () => 
+                    {
+                        console.log("Cities replied with SUCCESS");
+                        callback(postNumber, countries, cities);
+                        return;
+                    });
                 });
             });
         }
