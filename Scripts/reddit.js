@@ -107,7 +107,7 @@ function checkLocation(countriesList, citiesList, content, callback)
 }
 
 //Create post
-function createPost(posts, postNumber, i, callback)
+function createPost(posts, postNumber, i, countriesList, citiesList, callback)
 {
     function getPath(callback)
     {
