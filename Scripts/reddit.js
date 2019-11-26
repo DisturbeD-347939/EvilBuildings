@@ -61,7 +61,6 @@ function createFile(path, data, callback)
     if(!fs.existsSync(path))
     {
         fs.writeFileSync(path, data, function(){callback();});
-        callback();
     }
     else {callback();}
 }
