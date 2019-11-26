@@ -184,9 +184,9 @@ function getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, c
 module.exports =
 {
     //Download and organize reddit posts from r/evilbuildings
-    collect: function(reddit, subreddit, posts_per_day, postNumber, callback)
+    collect: function(reddit, subreddit, posts_per_day, postNumber, countriesList, citiesList, callback)
     {
-        getPosts(reddit, subreddit, posts_per_day, postNumber, function()
+        getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, citiesList, function()
         {
             console.log("Collect SUCCESSFUL");
             callback();
