@@ -86,9 +86,9 @@ module.exports =
             });
         }
 
-        checkCallbacks(function(postNumber, countries)
+        checkCallbacks(function(postNumber, countries, cities)
         {
-            callback([postNumber, countries]);
+            callback([postNumber, countries, cities]);
         })
     }
 }
