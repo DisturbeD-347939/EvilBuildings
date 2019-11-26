@@ -167,13 +167,13 @@ function getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, c
 {
     reddit.getSubreddit(subreddit, posts_per_day).getRising().then(posts => 
     {
-        console.log(posts_per_day);
         for(var i = 1; i < posts_per_day; i++)
         {
             createPost(posts, postNumber, i, function(data)
             {
                 console.log("Post " + data + " DOWNLOADED");
             });
+            console.log(postNumber);
             postNumber++;
         }
         callback();
