@@ -59,6 +59,7 @@ function run()
         {
             console.log("Variables SUCCESS");
             //Authenticate keys
+            console.log("Path = " + keyPath);
             auth.run(keyPath, function(data)
             {
                 console.log("AUTH SUCCESS");
