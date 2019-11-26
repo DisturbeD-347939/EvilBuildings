@@ -99,12 +99,27 @@ module.exports =
     //Post tweets
     post: function(twitter, callback)
     {
+        console.log("Posting tweet....");
         prepare(function(data)
         {
-            post(twitter, data, function()
+            if(data[0] != 1)
+            {
+                getTags(data, twitter, function(tags, twitter, data)
+                {
+                    console.log("Tweet prepared");
+                    post(twitter, data, tags, function()
+                    {
+                        callback();
+                        var today = new Date();
+                        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        console.log("Tweet posted | " + time);
+                    })
+                })
+            }
+            else
             {
                 callback();
-            })
+            }    
         })
     }
 }
