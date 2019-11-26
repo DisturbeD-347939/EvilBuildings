@@ -1,6 +1,7 @@
 //File management
 var fs = require('fs');
 var fsE = require('fs-extra');
+var iR = require('./imageRecognition.js');
 
 //Post photo and title to twitter
 function prepare(callback)
