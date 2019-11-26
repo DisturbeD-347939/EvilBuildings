@@ -163,7 +163,7 @@ function createPost(posts, postNumber, i, countriesList, citiesList, callback)
 }
 
 //Get posts
-function getPosts(reddit, subreddit, posts_per_day, postNumber, callback)
+function getPosts(reddit, subreddit, posts_per_day, postNumber, countriesList, citiesList, callback)
 {
     reddit.getSubreddit(subreddit, posts_per_day).getHot().then(posts => 
     {
