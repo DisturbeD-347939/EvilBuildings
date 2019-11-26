@@ -50,7 +50,8 @@ function run()
         {
             console.log("Setting variables");
             postNumber = data[0];
-            countries = data[1];
+            countriesList = data[1];
+            citiesList = data[2];
             callback();
         }
         //Set variables then run config then run auth
