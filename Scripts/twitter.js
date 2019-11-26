@@ -50,7 +50,29 @@ function getTags(pass, twitter, callback)
     });
 }
 
-function moveDir(oldPath, newPath)
+//Post tags as a comment
+function postTags(id, tags, twitter, callback)
+{
+    tags = tags.join(" ");
+    var res = 
+    {
+        status: tags,
+        in_reply_to_status_id: id
+    };
+
+    twitter.post('statuses/update', res, function(err, data, response)
+    {
+        if(!err)
+        {
+            //console.log(data);
+            console.log("Tags posted");
+        }
+        callback();
+    })
+}
+
+//Move directory
+function moveDir(oldPath, newPath, callback)
 {
     fsE.move(oldPath, newPath, err =>
     {
