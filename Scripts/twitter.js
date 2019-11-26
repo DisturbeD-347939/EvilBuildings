@@ -78,21 +78,23 @@ function moveDir(oldPath, newPath, callback)
     {
         if(err)
         {
-            //console.log(err);
+            console.log(err);
+            callback();
         }
         else
         {
             console.log("Moved to used tweets folder");
+            callback();
         }
     })
 }
 
-function post(twitter, data, callback)
+//Post to twitter
+function post(twitter, data, tags, callback)
 {
     // Make post request to Twitter
     twitter.post('media/upload', {media: data[1]}, function(error, media, response) 
     {
-
         if (!error) 
         {
             //Prepare the tweet
@@ -120,7 +122,6 @@ function post(twitter, data, callback)
                 }
                 else
                 {
-                    console.log("Tweet posted!");
 
                     var currentPath = __dirname.split("/");
                     currentPath.splice(-1, currentPath.length-1);
