@@ -47,7 +47,7 @@ module.exports =
                 {
                     var data = JSON.stringify(res, null, 2);
                     data = JSON.parse(data);
-                    callback(data)
+                    callback(data);
                 }
             });
         });
