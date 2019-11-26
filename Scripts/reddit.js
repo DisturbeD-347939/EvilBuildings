@@ -124,23 +124,38 @@ function createPost(posts, postNumber, i, countriesList, citiesList, callback)
         {
             console.log("SUCCESS");
             console.log("createFile");
-            createFile('./Posts/' + postNumber + '/title.txt', posts[i].title, function()
+            checkLocation(countriesList, citiesList, posts[i].title, function(data)
             {
-                console.log("SUCCESS");
-                console.log("checkFormat");
-                checkFormat(posts, i, function(data)
+                createFile('./Posts/' + postNumber + '/title.txt', data, function()
                 {
-                    if(data[0] && data[1] != "")
+                    console.log("SUCCESS");
+                    console.log("checkFormat");
+                    checkFormat(posts, i, postNumber, function(data)
                     {
-                        download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
+                        console.log(data);
+                        if(data[0] != 0)
                         {
-                            callback(postNumber); 
-                        });
-                    }
-                    else 
-                    {
-                        callback((postNumber + " FAILED "));
-                    }
+                            console.log("Downloading " + postNumber);
+                            createFile('./Posts/' + postNumber + '/config.txt', data[1], function()
+                            {
+                                if(data[0] && data[1] != "")
+                                {
+                                    download.get(posts[i].url, './Posts/' + postNumber + '/image.' + data[1], function()
+                                    {
+                                        callback(postNumber); 
+                                    });
+                                }
+                                else 
+                                {
+                                    callback((postNumber + " FAILED "));
+                                }
+                            });
+                        }
+                        else
+                        {
+                            callback(postNumber);
+                        }
+                    });
                 });
             });
         });
