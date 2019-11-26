@@ -13,13 +13,28 @@ function prepare(callback)
 
     //Check which one is the oldest post and collect its image and title
     var posts = fs.readdirSync(path + '/Posts');
-    var post = fs.readdirSync(path + '/Posts/' + posts[0]);
-    var image = fs.readFileSync(path + "/Posts/" + posts[0] + "/" + post[0], { encoding: 'base64' });
 
-    //Read title
-    fs.readFile(path + '/Posts/' + posts[0] + '/' + post[1], 'utf8', function(err, data) 
+    console.log(posts.length);
+    if(posts.length > 0)
     {
-        callback([data, image, posts[0]]);
+        console.log("Existing posts!");
+        var post = fs.readdirSync(path + '/Posts/' + posts[0]);
+        var image = fs.readFileSync(path + "/Posts/" + posts[0] + "/" + post[1], { encoding: 'base64' });
+    
+        //Read title
+        fs.readFile(path + '/Posts/' + posts[0] + '/' + post[2], 'utf8', function(err, data) 
+        {
+            console.log(data);
+            callback([data, image, posts[0], path + '/Posts/']);
+        });
+    }
+    else
+    {
+        console.log("Nothing to post!");
+        callback([1]);
+    }
+    
+}
     });
 }
 
