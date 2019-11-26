@@ -46,10 +46,19 @@ function post(twitter, data, callback)
         if (!error) 
         {
             //Prepare the tweet
+            var text = "";
+            
+            if(data[0] != "")
+            {
+                text += data[0] + " | ";
+            }
+            var separatedTags = tags.join(" ");
+            text += separatedTags;
+
             var status = 
             {
-                status: data[0],
-                media_ids: media.media_id_string
+                status: text,
+                media_ids: media.media_id_string,
             }
 
             //Post the tweet
